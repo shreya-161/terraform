@@ -1,1 +1,1 @@
-bucket_name = "state-bucket"
+bucket_name = "stage-bucket"
