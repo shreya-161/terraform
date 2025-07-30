@@ -1,0 +1,52 @@
+name: Terrform Deploy
+
+on:
+  push:
+    branches:
+      -main
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    environment: aws
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set AWS Credentials
+      run: |
+        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} " >> $GITHUB_ENV
+        echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} " >> $GITHUB_ENV
+        echo "AWS_DEFAULT_REGION=${{ secrets.AWS_REGION }} " >> $GITHUB_ENV
+        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} "
+        echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} "
+        echo "AWS_DEFAULT_REGION=${{ secrets.AWS_REGION }} "
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.0.0
+
+    - name: Terraform init
+      run: terrform init
+
+    - name: Terraform plan
+      run: terraform plan -out=tplan
+
+    - name: Apply terraform
+      run : terraform apply -var-file=dev.tfvars --auto-approve
+
+    - name: Clean up
+      run: rm tplan
+      
+
+          
+      
+      
+    
+    
+
+    
+
+
+  
