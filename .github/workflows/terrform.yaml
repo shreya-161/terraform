@@ -3,7 +3,7 @@ name: Terrform Deploy
 on:
   push:
     branches:
-      -main
+      - main
 jobs:
   terraform:
     runs-on: ubuntu-latest
